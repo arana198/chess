@@ -32,6 +32,10 @@ public class Queen extends Piece {
         return ImmutableList.copyOf(coordiantesList);
     }
 
+    public Queen(final Coordiantes coordiantes, final Alliance alliance) {
+        super(coordiantes, alliance);
+    }
+
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
         final List<Move> moveList = new ArrayList<>();

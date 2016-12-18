@@ -28,6 +28,10 @@ public class Rook extends Piece {
         return ImmutableList.copyOf(coordiantesList);
     }
 
+    public Rook(final Coordiantes coordiantes, final Alliance alliance) {
+        super(coordiantes, alliance, isFirstMove);
+    }
+
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
         final List<Move> moveList = new ArrayList<>();

@@ -32,8 +32,8 @@ public class Knight extends Piece {
         return ImmutableList.copyOf(coordiantesList);
     }
 
-    protected Knight(final Coordiantes coordiantes, final Alliance alliance) {
-        super(coordiantes, alliance);
+    public Knight(final Coordiantes coordiantes, final Alliance alliance) {
+        super(coordiantes, alliance, isFirstMove);
     }
 
     public Collection<Move> calculateLegalMoves(final Board board) {

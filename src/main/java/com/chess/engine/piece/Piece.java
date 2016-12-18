@@ -11,6 +11,7 @@ import java.util.Collection;
 public abstract class Piece {
 
     protected final Coordiantes coordiantes;
+
     protected final Alliance alliance;
 
     Piece(final Coordiantes coordiantes, final Alliance alliance) {
