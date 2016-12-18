@@ -21,7 +21,7 @@ public class Pawn extends Piece {
 
     private static final List<Coordiantes> CANDIDATE_MOVE_COORDINATES = initialiseCandidateMove();
 
-    protected final boolean isFirstMove;
+    private final boolean isFirstMove;
 
     private static final List<Coordiantes> initialiseCandidateMove() {
         final List<Coordiantes> coordiantesList = new ArrayList<>();

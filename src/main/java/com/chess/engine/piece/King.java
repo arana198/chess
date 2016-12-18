@@ -15,25 +15,28 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-public class Knight extends Piece {
+public class King extends Piece {
 
     private static final List<Coordiantes> CANDIDATE_MOVE_COORDINATES = initialiseCandidateMove();
 
+    private final boolean isFirstMove;
+
     private static final List<Coordiantes> initialiseCandidateMove() {
         final List<Coordiantes> coordiantesList = new ArrayList<>();
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-3, -2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-3, 2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(3, 2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(3, -2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-2, -3));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-2, 3));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(2, 3));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(2, -3));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(0, 1));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, 1));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, 0));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, -1));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(0, -1));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, -1));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, 0));
+        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, 1));
         return ImmutableList.copyOf(coordiantesList);
     }
 
-    public Knight(final Coordiantes coordiantes, final Alliance alliance) {
+    public King(final Coordiantes coordiantes, final Alliance alliance, final boolean isFirstMove) {
         super(coordiantes, alliance);
+        this.isFirstMove = isFirstMove;
     }
 
     public Collection<Move> calculateLegalMoves(final Board board) {

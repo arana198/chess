@@ -29,7 +29,7 @@ public class Rook extends Piece {
     }
 
     public Rook(final Coordiantes coordiantes, final Alliance alliance) {
-        super(coordiantes, alliance, isFirstMove);
+        super(coordiantes, alliance);
     }
 
     @Override

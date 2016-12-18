@@ -3,10 +3,10 @@ package com.chess.engine.piece;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Coordiantes;
+import com.chess.engine.board.tile.Tile;
 import com.chess.engine.move.AttackMove;
 import com.chess.engine.move.MajorMove;
 import com.chess.engine.move.Move;
-import com.chess.engine.board.tile.Tile;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 
@@ -29,7 +29,7 @@ public class Bishop extends Piece {
     }
 
     public Bishop(final Coordiantes coordiantes, final Alliance alliance) {
-        super(coordiantes, alliance, isFirstMove);
+        super(coordiantes, alliance);
     }
 
     @Override
