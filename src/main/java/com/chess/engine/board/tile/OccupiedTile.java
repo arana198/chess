@@ -3,7 +3,7 @@ package com.chess.engine.board.tile;
 import com.chess.engine.board.Coordiantes;
 import com.chess.engine.piece.Piece;
 
-public final class OccupiedTile extends Tile {
+final class OccupiedTile extends Tile {
 
     protected final Piece piece;
 
@@ -18,5 +18,10 @@ public final class OccupiedTile extends Tile {
 
     public Piece getPiece() {
         return this.piece;
+    }
+
+    @Override
+    public String toString() {
+        return piece.toString();
     }
 }

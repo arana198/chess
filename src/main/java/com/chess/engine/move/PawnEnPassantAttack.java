@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class PawnEnPassantAttack extends PawnAttackMove {
-    public PawnEnPassantAttack(final Piece movedPiece, final Coordiantes destinationCoordinates) {
-        super(movedPiece, destinationCoordinates);
+    public PawnEnPassantAttack(final Piece movedPiece, final Coordiantes destinationCoordinates, final Piece attackedPiece) {
+        super(movedPiece, destinationCoordinates, attackedPiece);
     }
 }

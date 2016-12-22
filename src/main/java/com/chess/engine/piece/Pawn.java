@@ -25,10 +25,10 @@ public class Pawn extends Piece {
 
     private static final List<Coordiantes> initialiseCandidateMove() {
         final List<Coordiantes> coordiantesList = new ArrayList<>();
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(0, 1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(0, 2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, 1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, 1));
+        coordiantesList.add(new Coordiantes(0, 1));
+        coordiantesList.add(new Coordiantes(0, 2));
+        coordiantesList.add(new Coordiantes(1, 1));
+        coordiantesList.add(new Coordiantes(-1, 1));
         return ImmutableList.copyOf(coordiantesList);
     }
 
@@ -81,5 +81,10 @@ public class Pawn extends Piece {
         }
 
         return ImmutableList.copyOf(moveList);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.PAWN.name();
     }
 }

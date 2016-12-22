@@ -1,10 +1,12 @@
 package com.chess.engine.board;
 
-public class BoardUtils {
+public final class BoardUtils {
 
     public static final int MAX_X_COORDINATES = 8;
 
     public static final int MAX_Y_COORDINATES = 8;
+
+    public static final int MAX_TILES_ON_BOARD = MAX_X_COORDINATES * MAX_Y_COORDINATES - 1;
 
     private BoardUtils() {
         throw new RuntimeException("Cannot initialise BoardUtils");

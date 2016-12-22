@@ -23,14 +23,14 @@ public class King extends Piece {
 
     private static final List<Coordiantes> initialiseCandidateMove() {
         final List<Coordiantes> coordiantesList = new ArrayList<>();
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(0, 1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, 1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, 0));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(1, -1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(0, -1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, -1));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, 0));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-1, 1));
+        coordiantesList.add(new Coordiantes(0, 1));
+        coordiantesList.add(new Coordiantes(1, 1));
+        coordiantesList.add(new Coordiantes(1, 0));
+        coordiantesList.add(new Coordiantes(1, -1));
+        coordiantesList.add(new Coordiantes(0, -1));
+        coordiantesList.add(new Coordiantes(-1, -1));
+        coordiantesList.add(new Coordiantes(-1, 0));
+        coordiantesList.add(new Coordiantes(-1, 1));
         return ImmutableList.copyOf(coordiantesList);
     }
 
@@ -63,5 +63,10 @@ public class King extends Piece {
         }
 
         return ImmutableList.copyOf(moveList);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.KING.name();
     }
 }

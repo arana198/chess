@@ -21,14 +21,14 @@ public class Knight extends Piece {
 
     private static final List<Coordiantes> initialiseCandidateMove() {
         final List<Coordiantes> coordiantesList = new ArrayList<>();
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-3, -2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-3, 2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(3, 2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(3, -2));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-2, -3));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(-2, 3));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(2, 3));
-        CANDIDATE_MOVE_COORDINATES.add(new Coordiantes(2, -3));
+        coordiantesList.add(new Coordiantes(-3, -2));
+        coordiantesList.add(new Coordiantes(-3, 2));
+        coordiantesList.add(new Coordiantes(3, 2));
+        coordiantesList.add(new Coordiantes(3, -2));
+        coordiantesList.add(new Coordiantes(-2, -3));
+        coordiantesList.add(new Coordiantes(-2, 3));
+        coordiantesList.add(new Coordiantes(2, 3));
+        coordiantesList.add(new Coordiantes(2, -3));
         return ImmutableList.copyOf(coordiantesList);
     }
 
@@ -60,5 +60,10 @@ public class Knight extends Piece {
         }
 
         return ImmutableList.copyOf(moveList);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.KNIGHT.name();
     }
 }
