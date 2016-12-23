@@ -44,5 +44,9 @@ public enum PieceType {
         this.pieceName = pieceName;
     }
 
+    public String getPieceName() {
+        return pieceName;
+    }
+
     public abstract boolean isKing();
 }

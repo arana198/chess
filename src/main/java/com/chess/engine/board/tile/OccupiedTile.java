@@ -5,9 +5,9 @@ import com.chess.engine.piece.Piece;
 
 final class OccupiedTile extends Tile {
 
-    protected final Piece piece;
+    private final Piece piece;
 
-    public OccupiedTile(final Coordiantes coordiantes, final Piece piece) {
+    OccupiedTile(final Coordiantes coordiantes, final Piece piece) {
         super(coordiantes);
         this.piece = piece;
     }

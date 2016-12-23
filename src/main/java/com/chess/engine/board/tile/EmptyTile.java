@@ -4,7 +4,7 @@ import com.chess.engine.board.Coordiantes;
 import com.chess.engine.piece.Piece;
 
 final class EmptyTile extends Tile {
-    protected EmptyTile(final Coordiantes coordiantes) {
+    EmptyTile(final Coordiantes coordiantes) {
         super(coordiantes);
     }
 
@@ -18,6 +18,6 @@ final class EmptyTile extends Tile {
 
     @Override
     public String toString() {
-        return " - ";
+        return "-";
     }
 }

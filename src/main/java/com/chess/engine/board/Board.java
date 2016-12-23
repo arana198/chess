@@ -50,7 +50,7 @@ public class Board {
 
     public Tile getTile(final Coordiantes coordiantes) {
         return boardTiles.parallelStream()
-                .filter(c -> c.equals(coordiantes))
+                .filter(tile -> tile.getCoordiantes().equals(coordiantes))
                 .findFirst()
                 .get();
     }
@@ -63,10 +63,9 @@ public class Board {
     }
 
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
-        return pieces.parallelStream()
+        return pieces.stream()
                 .map(p -> p.calculateLegalMoves(this))
-                .flatMap(c -> c.stream())
-                .collect(Collectors.collectingAndThen(Collectors.toList(), ImmutableList::copyOf));
+                .collect(ArrayList::new, List::addAll, List::addAll);
     }
 
     public static Board createStandardBoard() {
@@ -143,13 +142,14 @@ public class Board {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < BoardUtils.MAX_TILES_ON_BOARD; i++) {
+        for (int i = 0; i < this.boardTiles.size(); i++) {
             final String tileText = prettyPrint(this.boardTiles.get(i));
             builder.append(String.format("%3s", tileText));
             if ((i + 1) % 8 == 0) {
                 builder.append("\n");
             }
         }
+
         return builder.toString();
     }
 

@@ -6,6 +6,6 @@ public class JChess {
 
     public static void main(final String[] args) {
         Board board = Board.createStandardBoard();
-        System.out.print("Hello board is: /n" + board);
+        System.out.print(board);
     }
 }

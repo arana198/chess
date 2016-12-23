@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public abstract class Tile {
 
-    private static final Map<Coordiantes, Tile> EMPTY_TILE_CACHE = createAllPossibleEmptyTiles();
-    protected final Coordiantes coordiantes;
+    public static final Map<Coordiantes, Tile> EMPTY_TILE_CACHE = createAllPossibleEmptyTiles();
+    private final Coordiantes coordiantes;
 
     Tile(final Coordiantes coordiantes) {
         this.coordiantes = coordiantes;
@@ -21,7 +21,7 @@ public abstract class Tile {
     private static Map<Coordiantes, Tile> createAllPossibleEmptyTiles() {
         final Map<Coordiantes, Tile> coordiantesTileMap = new HashMap<Coordiantes, Tile>();
         for (int i = 0; i < BoardUtils.MAX_X_COORDINATES; i++) {
-            for (int j = 0; i < BoardUtils.MAX_Y_COORDINATES; j++) {
+            for (int j = 0; j < BoardUtils.MAX_Y_COORDINATES; j++) {
                 final Coordiantes coordiantes = new Coordiantes(i, j);
                 coordiantesTileMap.put(coordiantes, new EmptyTile(coordiantes));
             }
@@ -40,4 +40,8 @@ public abstract class Tile {
     public abstract boolean isTileOccupied();
 
     public abstract Piece getPiece();
+
+    public Coordiantes getCoordiantes() {
+        return coordiantes;
+    }
 }

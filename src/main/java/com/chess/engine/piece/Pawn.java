@@ -45,7 +45,7 @@ public class Pawn extends Piece {
             final int yCoordinates = this.coordiantes.getYCoordinate() + (this.alliance.getDirection() * offsetCoordinates.getYCoordinate());
             final Coordiantes candidateDestinationCoordinate = new Coordiantes(xCoordinates, yCoordinates);
 
-            if (!BoardUtils.isValidTileCoordinates(this.coordiantes, candidateDestinationCoordinate)) {
+            if (!BoardUtils.isValidTileCoordinates(candidateDestinationCoordinate)) {
                 continue;
             }
 
@@ -85,6 +85,6 @@ public class Pawn extends Piece {
 
     @Override
     public String toString() {
-        return PieceType.PAWN.name();
+        return PieceType.PAWN.getPieceName();
     }
 }

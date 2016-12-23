@@ -39,13 +39,14 @@ public class Knight extends Piece {
     public Collection<Move> calculateLegalMoves(final Board board) {
         final List<Move> moveList = new ArrayList<>();
         for (Coordiantes offsetCoordinates : CANDIDATE_MOVE_COORDINATES) {
-            if (!BoardUtils.isValidTileCoordinates(this.coordiantes, offsetCoordinates)) {
-                continue;
-            }
-
             final int xCoordinates = this.coordiantes.getXCoordinate() + offsetCoordinates.getXCoordinate();
             final int yCoordinates = this.coordiantes.getYCoordinate() + offsetCoordinates.getYCoordinate();
             final Coordiantes candidateCoordinates = new Coordiantes(xCoordinates, yCoordinates);
+
+            if (!BoardUtils.isValidTileCoordinates(candidateCoordinates)) {
+                continue;
+            }
+
             final Tile candidateTile = board.getTile(candidateCoordinates);
 
             if (!candidateTile.isTileOccupied()) {
@@ -64,6 +65,6 @@ public class Knight extends Piece {
 
     @Override
     public String toString() {
-        return PieceType.KNIGHT.name();
+        return PieceType.KNIGHT.getPieceName();
     }
 }

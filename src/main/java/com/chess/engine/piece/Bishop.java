@@ -40,12 +40,12 @@ public class Bishop extends Piece {
             int yCoordinates = this.coordiantes.getYCoordinate();
             Coordiantes candidateDestinationCoordinate = new Coordiantes(xCoordinates, yCoordinates);
 
-            while (BoardUtils.isValidTileCoordinates(this.coordiantes, candidateDestinationCoordinate)) {
+            while (BoardUtils.isValidTileCoordinates(candidateDestinationCoordinate)) {
                 xCoordinates += offsetCoordinates.getXCoordinate();
                 yCoordinates += offsetCoordinates.getYCoordinate();
                 candidateDestinationCoordinate = new Coordiantes(xCoordinates, yCoordinates);
 
-                if (BoardUtils.isValidTileCoordinates(this.coordiantes, candidateDestinationCoordinate)) {
+                if (BoardUtils.isValidTileCoordinates(candidateDestinationCoordinate)) {
                     final Tile candidateTile = board.getTile(candidateDestinationCoordinate);
 
                     if (!candidateTile.isTileOccupied()) {
@@ -67,6 +67,6 @@ public class Bishop extends Piece {
 
     @Override
     public String toString() {
-        return PieceType.BISHOP.name();
+        return PieceType.BISHOP.getPieceName();
     }
 }
