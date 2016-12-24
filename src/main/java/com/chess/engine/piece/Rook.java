@@ -28,8 +28,13 @@ public class Rook extends Piece {
         return ImmutableList.copyOf(coordiantesList);
     }
 
-    public Rook(final Coordiantes coordiantes, final Alliance alliance) {
-        super(coordiantes, alliance);
+    public Rook(final Coordiantes coordiantes, final Alliance alliance, final boolean isFirstMove) {
+        super(PieceType.ROOK, coordiantes, alliance, isFirstMove);
+    }
+
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Rook(move.getDestinationCoordinates(), move.getMovedPiece().getAlliance(), false);
     }
 
     @Override
@@ -49,12 +54,12 @@ public class Rook extends Piece {
                     final Tile candidateTile = board.getTile(candidateDestinationCoordinate);
 
                     if (!candidateTile.isTileOccupied()) {
-                        moveList.add(new MajorMove(this, candidateDestinationCoordinate));
+                        moveList.add(new MajorMove(board, this, candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateTile.getPiece();
                         final Alliance alliance = pieceAtDestination.getAlliance();
                         if (this.alliance != alliance) {
-                            moveList.add(new AttackMove(this, candidateDestinationCoordinate, pieceAtDestination));
+                            moveList.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                         }
                         break;
                     }

@@ -5,10 +5,10 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Coordiantes;
 import com.chess.engine.board.tile.Tile;
 import com.chess.engine.move.Move;
-import com.chess.engine.move.PawnAttackMove;
-import com.chess.engine.move.PawnJumpMove;
-import com.chess.engine.move.PawnMove;
-import com.chess.engine.move.PawnPromotion;
+import com.chess.engine.move.pawn.PawnAttackMove;
+import com.chess.engine.move.pawn.PawnJumpMove;
+import com.chess.engine.move.pawn.PawnMove;
+import com.chess.engine.move.pawn.PawnPromotion;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 
@@ -21,8 +21,6 @@ public class Pawn extends Piece {
 
     private static final List<Coordiantes> CANDIDATE_MOVE_COORDINATES = initialiseCandidateMove();
 
-    private final boolean isFirstMove;
-
     private static final List<Coordiantes> initialiseCandidateMove() {
         final List<Coordiantes> coordiantesList = new ArrayList<>();
         coordiantesList.add(new Coordiantes(0, 1));
@@ -33,8 +31,12 @@ public class Pawn extends Piece {
     }
 
     public Pawn(final Coordiantes coordiantes, final Alliance alliance, final Boolean isFirstMove) {
-        super(coordiantes, alliance);
-        this.isFirstMove = isFirstMove;
+        super(PieceType.PAWN, coordiantes, alliance, isFirstMove);
+    }
+
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Pawn(move.getDestinationCoordinates(), move.getMovedPiece().getAlliance(), false);
     }
 
     @Override
@@ -52,9 +54,9 @@ public class Pawn extends Piece {
             final Tile candidateTile = board.getTile(candidateDestinationCoordinate);
             if (offsetCoordinates.getXCoordinate() == 0 && offsetCoordinates.getYCoordinate() == 1 && !candidateTile.isTileOccupied()) { //single move
                 if (this.alliance.isPawnPromotionSquare(candidateDestinationCoordinate)) {
-                    moveList.add(new PawnPromotion(this, candidateDestinationCoordinate));
+                    moveList.add(new PawnPromotion(board, this, candidateDestinationCoordinate));
                 } else {
-                    moveList.add(new PawnMove(this, candidateDestinationCoordinate));
+                    moveList.add(new PawnMove(board, this, candidateDestinationCoordinate));
                 }
             } else if (this.isFirstMove && offsetCoordinates.getXCoordinate() == 0 && offsetCoordinates.getYCoordinate() == 2
                     && (this.alliance.isWhite() && this.coordiantes.getXCoordinate() == 2)
@@ -62,14 +64,14 @@ public class Pawn extends Piece {
                 final Coordiantes behindCandidateDestinationCoordinate = new Coordiantes(xCoordinates, yCoordinates + (1 * this.alliance.getDirection()));
                 final Tile behindCandidateTile = board.getTile(behindCandidateDestinationCoordinate);
                 if (!candidateTile.isTileOccupied() && !behindCandidateTile.isTileOccupied()) {
-                    moveList.add(new PawnJumpMove(this, candidateDestinationCoordinate));
+                    moveList.add(new PawnJumpMove(board, this, candidateDestinationCoordinate));
                 }
             } else if ((offsetCoordinates.getXCoordinate() == 1 || offsetCoordinates.getXCoordinate() == -1) && offsetCoordinates.getYCoordinate() == 1) {
-                if(candidateTile.isTileOccupied()) {
+                if (candidateTile.isTileOccupied()) {
                     final Piece pieceAtDestination = candidateTile.getPiece();
                     final Alliance pieceAtDestinationAlliance = pieceAtDestination.getAlliance();
-                    if(this.alliance != pieceAtDestinationAlliance) {
-                        moveList.add(new PawnAttackMove(this, candidateDestinationCoordinate, pieceAtDestination));
+                    if (this.alliance != pieceAtDestinationAlliance) {
+                        moveList.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                     }
                 }
             } //consider enPassant move

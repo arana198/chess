@@ -1,6 +1,7 @@
 package com.chess.engine.piece;
 
 import com.chess.engine.board.Coordiantes;
+import com.chess.engine.player.Player;
 
 import static com.chess.engine.board.BoardUtils.MAX_Y_COORDINATES;
 
@@ -9,6 +10,11 @@ public enum Alliance {
         @Override
         public int getDirection() {
             return -1;
+        }
+
+        @Override
+        public Player choosePlayerByAlliance(final Player whitePlayer, final Player blackPlayer) {
+            return blackPlayer;
         }
 
         @Override
@@ -33,6 +39,11 @@ public enum Alliance {
         }
 
         @Override
+        public Player choosePlayerByAlliance(final Player whitePlayer, final Player blackPlayer) {
+            return whitePlayer;
+        }
+
+        @Override
         public boolean isPawnPromotionSquare(final Coordiantes coordiantes) {
             return coordiantes.getYCoordinate() == MAX_Y_COORDINATES;
         }
@@ -49,6 +60,8 @@ public enum Alliance {
     };
 
     public abstract int getDirection();
+
+    public abstract Player choosePlayerByAlliance(Player whitePlayer, Player blackPlayer);
 
     public abstract boolean isPawnPromotionSquare(Coordiantes coordiantes);
 

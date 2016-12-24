@@ -10,6 +10,9 @@ import com.chess.engine.piece.Pawn;
 import com.chess.engine.piece.Piece;
 import com.chess.engine.piece.Queen;
 import com.chess.engine.piece.Rook;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
+import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -25,27 +28,20 @@ public class Board {
     private final List<Tile> boardTiles;
     private final Collection<Piece> activeWhitePieces;
     private final Collection<Piece> activeBlackPieces;
-    private final Collection<Move> whiteLegalMoves;
-    private final Collection<Move> blackLegalMoves;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
+    private final Player currentPlayer;
 
     private Board(final BoardBuilder boardBuilder) {
         this.boardTiles = this.createGameBoard(boardBuilder);
         this.activeWhitePieces = this.calculateActivePieces(boardBuilder, Alliance.WHITE);
         this.activeBlackPieces = this.calculateActivePieces(boardBuilder, Alliance.BLACK);
-        this.whiteLegalMoves = this.calculateLegalMoves(this.activeWhitePieces);
-        this.blackLegalMoves = this.calculateLegalMoves(this.activeBlackPieces);
-    }
+        final Collection<Move> whiteLegalMoves = this.calculateLegalMoves(this.activeWhitePieces);
+        final Collection<Move> blackLegalMoves = this.calculateLegalMoves(this.activeBlackPieces);
 
-    private static List<Tile> createGameBoard(final BoardBuilder boardBuilder) {
-        final List<Tile> tiles = new ArrayList<>(BoardUtils.MAX_TILES_ON_BOARD);
-        for (int i = 0; i < BoardUtils.MAX_X_COORDINATES; i++) {
-            for (int j = 0; j < BoardUtils.MAX_Y_COORDINATES; j++) {
-                final Coordiantes coordiantes = new Coordiantes(i, j);
-                tiles.add(Tile.createTile(coordiantes, Optional.ofNullable(boardBuilder.getBoardPiece(coordiantes))));
-            }
-        }
-
-        return ImmutableList.copyOf(tiles);
+        this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
+        this.blackPlayer = new BlackPlayer(this, blackLegalMoves, whiteLegalMoves);
+        this.currentPlayer = boardBuilder.nextMoveMaker.choosePlayerByAlliance(whitePlayer, blackPlayer);
     }
 
     public Tile getTile(final Coordiantes coordiantes) {
@@ -53,6 +49,26 @@ public class Board {
                 .filter(tile -> tile.getCoordiantes().equals(coordiantes))
                 .findFirst()
                 .get();
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Player getWhitePlayer() {
+        return this.whitePlayer;
+    }
+
+    public Player getBlackPlayer() {
+        return this.blackPlayer;
+    }
+
+    public Collection<Piece> getActiveWhitePieces() {
+        return this.activeWhitePieces;
+    }
+
+    public Collection<Piece> getActiveBlackPieces() {
+        return this.activeBlackPieces;
     }
 
     private Collection<Piece> calculateActivePieces(final BoardBuilder boardBuilder, final Alliance alliance) {
@@ -63,7 +79,7 @@ public class Board {
     }
 
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
-        return pieces.stream()
+        return pieces.parallelStream()
                 .map(p -> p.calculateLegalMoves(this))
                 .collect(ArrayList::new, List::addAll, List::addAll);
     }
@@ -71,14 +87,14 @@ public class Board {
     public static Board createStandardBoard() {
         final BoardBuilder builder = new BoardBuilder();
         // Black Layout
-        builder.setPiece(new Rook(new Coordiantes(0, 7), Alliance.BLACK));
-        builder.setPiece(new Knight(new Coordiantes(1, 7), Alliance.BLACK));
-        builder.setPiece(new Bishop(new Coordiantes(2, 7), Alliance.BLACK));
-        builder.setPiece(new Queen(new Coordiantes(3, 7), Alliance.BLACK));
+        builder.setPiece(new Rook(new Coordiantes(0, 7), Alliance.BLACK, true));
+        builder.setPiece(new Knight(new Coordiantes(1, 7), Alliance.BLACK, true));
+        builder.setPiece(new Bishop(new Coordiantes(2, 7), Alliance.BLACK, true));
+        builder.setPiece(new Queen(new Coordiantes(3, 7), Alliance.BLACK, true));
         builder.setPiece(new King(new Coordiantes(4, 7), Alliance.BLACK, true));
-        builder.setPiece(new Bishop(new Coordiantes(5, 7), Alliance.BLACK));
-        builder.setPiece(new Knight(new Coordiantes(6, 7), Alliance.BLACK));
-        builder.setPiece(new Rook(new Coordiantes(7, 7), Alliance.BLACK));
+        builder.setPiece(new Bishop(new Coordiantes(5, 7), Alliance.BLACK, true));
+        builder.setPiece(new Knight(new Coordiantes(6, 7), Alliance.BLACK, true));
+        builder.setPiece(new Rook(new Coordiantes(7, 7), Alliance.BLACK, true));
         builder.setPiece(new Pawn(new Coordiantes(0, 6), Alliance.BLACK, true));
         builder.setPiece(new Pawn(new Coordiantes(1, 6), Alliance.BLACK, true));
         builder.setPiece(new Pawn(new Coordiantes(2, 6), Alliance.BLACK, true));
@@ -89,26 +105,38 @@ public class Board {
         builder.setPiece(new Pawn(new Coordiantes(7, 6), Alliance.BLACK, true));
 
         // White Layout
-        builder.setPiece(new Rook(new Coordiantes(0, 0), Alliance.BLACK));
-        builder.setPiece(new Knight(new Coordiantes(1, 0), Alliance.BLACK));
-        builder.setPiece(new Bishop(new Coordiantes(2, 0), Alliance.BLACK));
-        builder.setPiece(new Queen(new Coordiantes(3, 0), Alliance.BLACK));
-        builder.setPiece(new King(new Coordiantes(4, 0), Alliance.BLACK, true));
-        builder.setPiece(new Bishop(new Coordiantes(5, 0), Alliance.BLACK));
-        builder.setPiece(new Knight(new Coordiantes(6, 0), Alliance.BLACK));
-        builder.setPiece(new Rook(new Coordiantes(7, 0), Alliance.BLACK));
-        builder.setPiece(new Pawn(new Coordiantes(0, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(1, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(2, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(3, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(4, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(5, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(6, 1), Alliance.BLACK, true));
-        builder.setPiece(new Pawn(new Coordiantes(7, 1), Alliance.BLACK, true));
+        builder.setPiece(new Rook(new Coordiantes(0, 0), Alliance.WHITE, true));
+        builder.setPiece(new Knight(new Coordiantes(1, 0), Alliance.WHITE, true));
+        builder.setPiece(new Bishop(new Coordiantes(2, 0), Alliance.WHITE, true));
+        builder.setPiece(new Queen(new Coordiantes(3, 0), Alliance.WHITE, true));
+        builder.setPiece(new King(new Coordiantes(4, 0), Alliance.WHITE, true));
+        builder.setPiece(new Bishop(new Coordiantes(5, 0), Alliance.WHITE, true));
+        builder.setPiece(new Knight(new Coordiantes(6, 0), Alliance.WHITE, true));
+        builder.setPiece(new Rook(new Coordiantes(7, 0), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(0, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(1, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(2, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(3, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(4, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(5, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(6, 1), Alliance.WHITE, true));
+        builder.setPiece(new Pawn(new Coordiantes(7, 1), Alliance.WHITE, true));
 
         //white to move
         builder.setMoveMaker(Alliance.WHITE);
         return builder.build();
+    }
+
+    private static List<Tile> createGameBoard(final BoardBuilder boardBuilder) {
+        final List<Tile> tiles = new ArrayList<>(BoardUtils.MAX_TILES_ON_BOARD - 1);
+        for (int y = 0; y < BoardUtils.MAX_Y_COORDINATES; y++) {
+            for (int x = 0; x < BoardUtils.MAX_X_COORDINATES; x++) {
+                final Coordiantes coordiantes = new Coordiantes(x, y);
+                tiles.add(Tile.createTile(coordiantes, Optional.ofNullable(boardBuilder.getBoardPiece(coordiantes))));
+            }
+        }
+
+        return ImmutableList.copyOf(tiles);
     }
 
     public static final class BoardBuilder {

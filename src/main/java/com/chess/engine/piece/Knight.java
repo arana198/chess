@@ -32,8 +32,13 @@ public class Knight extends Piece {
         return ImmutableList.copyOf(coordiantesList);
     }
 
-    public Knight(final Coordiantes coordiantes, final Alliance alliance) {
-        super(coordiantes, alliance);
+    public Knight(final Coordiantes coordiantes, final Alliance alliance, final boolean isFirstMove) {
+        super(PieceType.KNIGHT, coordiantes, alliance, isFirstMove);
+    }
+
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Knight(move.getDestinationCoordinates(), move.getMovedPiece().getAlliance(), false);
     }
 
     public Collection<Move> calculateLegalMoves(final Board board) {
@@ -50,12 +55,12 @@ public class Knight extends Piece {
             final Tile candidateTile = board.getTile(candidateCoordinates);
 
             if (!candidateTile.isTileOccupied()) {
-                moveList.add(new MajorMove(this, candidateCoordinates));
+                moveList.add(new MajorMove(board, this, candidateCoordinates));
             } else {
                 final Piece pieceAtDestination = candidateTile.getPiece();
                 final Alliance alliance = pieceAtDestination.getAlliance();
                 if (this.alliance != alliance) {
-                    moveList.add(new AttackMove(this, candidateCoordinates, pieceAtDestination));
+                    moveList.add(new AttackMove(board, this, candidateCoordinates, pieceAtDestination));
                 }
             }
         }

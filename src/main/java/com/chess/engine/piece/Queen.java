@@ -32,8 +32,13 @@ public class Queen extends Piece {
         return ImmutableList.copyOf(coordiantesList);
     }
 
-    public Queen(final Coordiantes coordiantes, final Alliance alliance) {
-        super(coordiantes, alliance);
+    public Queen(final Coordiantes coordiantes, final Alliance alliance, final boolean isFirstMove) {
+        super(PieceType.QUEEN, coordiantes, alliance, isFirstMove);
+    }
+
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Queen(move.getDestinationCoordinates(), move.getMovedPiece().getAlliance(), false);
     }
 
     @Override
@@ -53,12 +58,12 @@ public class Queen extends Piece {
                     final Tile candidateTile = board.getTile(candidateDestinationCoordinate);
 
                     if (!candidateTile.isTileOccupied()) {
-                        moveList.add(new MajorMove(this, candidateDestinationCoordinate));
+                        moveList.add(new MajorMove(board, this, candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateTile.getPiece();
                         final Alliance alliance = pieceAtDestination.getAlliance();
                         if (this.alliance != alliance) {
-                            moveList.add(new AttackMove(this, candidateDestinationCoordinate, pieceAtDestination));
+                            moveList.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                         }
                         break;
                     }
